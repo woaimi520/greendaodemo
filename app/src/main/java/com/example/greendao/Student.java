@@ -5,7 +5,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.Generated;
 
-@Entity
+@Entity //表
 public class Student {
     @Id(autoincrement = true)
     private long stuID;//学院ID
