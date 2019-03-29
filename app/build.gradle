@@ -19,6 +19,8 @@ android {
 }
 greendao {
     schemaVersion 1 //当前数据库版本
+    targetGenDir 'src/main/java'    //生成DaoMaster类文件夹
+    daoPackage   'com.ppjun.greendaotest.db'  //生成DaoMaster类包名
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
