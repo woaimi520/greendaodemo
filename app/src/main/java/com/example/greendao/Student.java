@@ -4,7 +4,27 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.Generated;
-
+/**
+ * 此类定义了 表的名字 以及每行的数据
+ * 一对一： UserBean 中定义  private Long otherUserInfoId;  @ToOne(joinProperty = "otherUserInfoId")  private OtherUserInfoBean otherUserInfoBean;
+ *         Long otherUserInfoId = (long) (Math.random() * 1000)
+ *         user.setOtherUserInfoId(otherUserInfoId); //控制变量otherUserInfoId的值
+ *         otherUserInfoBean.setId(otherUserInfoId);//控制自己的id就行
+ *
+ * 一对多    一中 定义 @ToMany(referencedJoinProperty = "leaderId")      private List<MemberBean> memberBeanList;
+ *           多中定义  private Long leaderId;
+ *           多中绑定 memberBean.setLeaderId
+ * 多对多    studengt定义   @ToMany
+ *  *                    @JoinEntity(entity = TeacherJoinStudentBean.class,
+ *  *                    sourceProperty = "sId",//对应定义类的id
+ *  *                    targetProperty = "tId")//对应另外类的id
+ *            menber定义   @ToMany
+ *  *                    @JoinEntity(entity = TeacherJoinStudentBean.class,
+ *  *                    sourceProperty = "tId",//对应定义类的id
+ *  *                    targetProperty = "sId")//对应另外类的id
+ *
+ *                     中间类定义   TeacherJoinStudentBean teacherJoinStudentBean3 = new TeacherJoinStudentBean(null,2l,1l);
+ */
 @Entity //表
 public class Student {
     @Id(autoincrement = true)
