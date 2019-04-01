@@ -3,6 +3,7 @@ package com.example.greendao;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.JoinEntity;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.ToOne;
@@ -13,6 +14,7 @@ import com.ppjun.greendaotest.db.StudentDao;
 
 import java.util.List;
 import com.ppjun.greendaotest.db.CourseDao;
+import com.ppjun.greendaotest.db.TeacherDao;
 
 /**
  * 此类定义了 表的名字 以及每行的数据
@@ -39,7 +41,7 @@ import com.ppjun.greendaotest.db.CourseDao;
 public class Student {
     @Id(autoincrement = true)
     private long stuID;//学院ID
-    @NotNull
+
     private String stuNO;//学院编号
     private String stuName;//学院名称
     private String stuSex;//学院性别
@@ -52,21 +54,21 @@ public class Student {
 
     @ToMany(referencedJoinProperty = "courseId")
     private List<Course> courseList;
-
+    @ToMany
+    @JoinEntity(entity = TeacherJoinStudentBean.class,
+                             sourceProperty = "sId",//对应定义类的id
+                            targetProperty = "tId")//对应另外类的id
+    private List<Teacher> teacherBeanList;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
+
     /** Used for active entity operations. */
     @Generated(hash = 1943931642)
     private transient StudentDao myDao;
-    @Generated(hash = 1413666094)
-    private transient Long myCard__resolvedKey;
-
-
-
-    @Generated(hash = 813906572)
-    public Student(long stuID, @NotNull String stuNO, String stuName, String stuSex, String stuScore, Long cardId) {
+    @Generated(hash = 938448590)
+    public Student(long stuID, String stuNO, String stuName, String stuSex, String stuScore, Long cardId) {
         this.stuID = stuID;
         this.stuNO = stuNO;
         this.stuName = stuName;
@@ -107,7 +109,14 @@ public class Student {
     public void setStuScore(String stuScore) {
         this.stuScore = stuScore;
     }
-
+    public Long getCardId() {
+        return this.cardId;
+    }
+    public void setCardId(Long cardId) {
+        this.cardId = cardId;
+    }
+    @Generated(hash = 1413666094)
+    private transient Long myCard__resolvedKey;
     /** To-one relationship, resolved on first access. */
     @Generated(hash = 380151869)
     public IdCard getMyCard() {
@@ -134,6 +143,58 @@ public class Student {
             cardId = myCard == null ? null : myCard.getId();
             myCard__resolvedKey = cardId;
         }
+    }
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 1280401145)
+    public List<Course> getCourseList() {
+        if (courseList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            CourseDao targetDao = daoSession.getCourseDao();
+            List<Course> courseListNew = targetDao._queryStudent_CourseList(stuID);
+            synchronized (this) {
+                if (courseList == null) {
+                    courseList = courseListNew;
+                }
+            }
+        }
+        return courseList;
+    }
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 829241409)
+    public synchronized void resetCourseList() {
+        courseList = null;
+    }
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 1491194462)
+    public List<Teacher> getTeacherBeanList() {
+        if (teacherBeanList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            TeacherDao targetDao = daoSession.getTeacherDao();
+            List<Teacher> teacherBeanListNew = targetDao._queryStudent_TeacherBeanList(stuID);
+            synchronized (this) {
+                if (teacherBeanList == null) {
+                    teacherBeanList = teacherBeanListNew;
+                }
+            }
+        }
+        return teacherBeanList;
+    }
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 832141143)
+    public synchronized void resetTeacherBeanList() {
+        teacherBeanList = null;
     }
     /**
      * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
@@ -174,38 +235,8 @@ public class Student {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getStudentDao() : null;
     }
-    public Long getCardId() {
-        return this.cardId;
-    }
-    public void setCardId(Long cardId) {
-        this.cardId = cardId;
-    }
-    /**
-     * To-many relationship, resolved on first access (and after reset).
-     * Changes to to-many relations are not persisted, make changes to the target entity.
-     */
-    @Generated(hash = 1280401145)
-    public List<Course> getCourseList() {
-        if (courseList == null) {
-            final DaoSession daoSession = this.daoSession;
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            CourseDao targetDao = daoSession.getCourseDao();
-            List<Course> courseListNew = targetDao._queryStudent_CourseList(stuID);
-            synchronized (this) {
-                if (courseList == null) {
-                    courseList = courseListNew;
-                }
-            }
-        }
-        return courseList;
-    }
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    @Generated(hash = 829241409)
-    public synchronized void resetCourseList() {
-        courseList = null;
-    }
+
+
 
 
 }

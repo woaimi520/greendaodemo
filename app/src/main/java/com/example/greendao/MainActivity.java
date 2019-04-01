@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             course1.setId(1L);
             course1.setName("语文");
             course1.setCourseId(1l);
-            daoSession.getCourseDao().insert(course1);
+            daoSession.getCourseDao().insert(course1); //一对多
             Course course2 = new Course();
             course2.setId(2L);
             course2.setName("数学");
@@ -74,6 +74,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             student1.setCardId(1l);//一对一关系建立
             daoSession.insertOrReplace(student1);
 
+            //多对多
+            List<Teacher> teacherList = new ArrayList<Teacher>();
+            for (long i = 1; i < 3; i++) {
+                Teacher teacher = new Teacher();
+                teacher.setTeaID(i);
+                teacher.setName("罗老师");
+
+                teacherList.add(teacher);
+
+            }
+            daoSession.getTeacherDao().insertInTx(teacherList);
+
+            List<Student> studentsList = new ArrayList<Student>();
+            for (long i = 2; i < 4; i++) {
+                Student student = new Student();
+                student.setStuID(i);
+
+            }
+            daoSession.getStudentDao().insertInTx(studentsList);
+
+            TeacherJoinStudentBean teacherJoinStudentBean3 = new TeacherJoinStudentBean(null,2l,1l);
+            daoSession.getTeacherJoinStudentBeanDao().insert(teacherJoinStudentBean3);
 
             Toast.makeText(this, "添加数据成功",Toast.LENGTH_SHORT).show();
         }
@@ -87,12 +109,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 searchAssignInfo += "id："+"\n" + stu.getStuID() + "编号：" + stu.getStuNO()+ "姓名：" + stu.getStuName() + "性别：" + stu.getStuSex() + "成绩：" + stu.getStuScore() + "\n";
                 searchAssignInfo += stu.getMyCard().getCardId() + "\n";
               for(int j =0;j<stu.getCourseList().size();j++){
-                searchAssignInfo += stu.getCourseList().get(j).getName()+ "\n";
+                    searchAssignInfo += stu.getCourseList().get(j).getName()+ "\n";
                 }
-
-
+                for(int j =0;j<stu.getTeacherBeanList().size();j++){
+                    searchAssignInfo += stu.getTeacherBeanList().get(j).getName()+ "\n";
+                }
             }
-            Toast.makeText(this, "查询成功: "+searchAssignInfo,Toast.LENGTH_SHORT).show();
+
+
+            Toast.makeText(this, "查询成功: "+searchAssignInfo,Toast.LENGTH_LONG).show();
         }
         if(v.getId()==R.id.gengxin){
             Student student = stuDao.queryBuilder().where(StudentDao.Properties.StuName.eq("任宇")).build().unique();

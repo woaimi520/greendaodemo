@@ -12,6 +12,8 @@ public class IdCard {
     private Long id;//学院ID
     @Index(unique = true)
     private Long cardId;
+
+
     @Generated(hash = 346932368)
     public IdCard(Long id, Long cardId) {
         this.id = id;
