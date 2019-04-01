@@ -13,6 +13,7 @@ import com.ppjun.greendaotest.db.StudentDao;
 import org.greenrobot.greendao.query.DeleteQuery;
 import org.greenrobot.greendao.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -47,10 +48,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.add){
-            stuDao.insertOrReplace(new Student(01, "001", "任宇", "男", "100"));
-            stuDao.insertOrReplace(new Student(02, "002", "贺er宝", "女", "66"));
-            stuDao.insertOrReplace(new Student(03, "003", "贺san宝", "女", "23"));
-            stuDao.insertOrReplace(new Student(04, "004", "贺si宝", "男", "65"));
+            IdCard idCard1 = new IdCard();
+            idCard1.setId(1l);
+            idCard1.setCardId(500221198808210412l);
+            daoSession.insertOrReplace(idCard1);
+
+            Course course1 = new Course();
+            course1.setId(1L);
+            course1.setName("语文");
+            course1.setCourseId(1l);
+            daoSession.getCourseDao().insert(course1);
+            Course course2 = new Course();
+            course2.setId(2L);
+            course2.setName("数学");
+            course2.setCourseId(3l);
+            daoSession.getCourseDao().insert(course2);
+
+
+            Student student1 = new Student();
+            student1.setStuID(1l);
+            student1.setStuName("任宇");
+            student1.setStuNO("01");
+            student1.setStuSex("男");
+            student1.setStuScore("80");
+            student1.setCardId(1l);//一对一关系建立
+            daoSession.insertOrReplace(student1);
+
+
             Toast.makeText(this, "添加数据成功",Toast.LENGTH_SHORT).show();
         }
         if(v.getId()==R.id.chaxun){
@@ -61,6 +85,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for(int i=0;i<stulist.size();i++){
                 Student stu = stulist.get(i);
                 searchAssignInfo += "id："+"\n" + stu.getStuID() + "编号：" + stu.getStuNO()+ "姓名：" + stu.getStuName() + "性别：" + stu.getStuSex() + "成绩：" + stu.getStuScore() + "\n";
+                searchAssignInfo += stu.getMyCard().getCardId() + "\n";
+              for(int j =0;j<stu.getCourseList().size();j++){
+                searchAssignInfo += stu.getCourseList().get(j).getName()+ "\n";
+                }
+
 
             }
             Toast.makeText(this, "查询成功: "+searchAssignInfo,Toast.LENGTH_SHORT).show();

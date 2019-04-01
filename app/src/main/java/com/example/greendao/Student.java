@@ -2,8 +2,18 @@ package com.example.greendao;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.ToMany;
+import org.greenrobot.greendao.annotation.ToOne;
+import org.greenrobot.greendao.DaoException;
+import com.ppjun.greendaotest.db.DaoSession;
+import com.ppjun.greendaotest.db.IdCardDao;
+import com.ppjun.greendaotest.db.StudentDao;
+
+import java.util.List;
+import com.ppjun.greendaotest.db.CourseDao;
+
 /**
  * 此类定义了 表的名字 以及每行的数据
  * 一对一： UserBean 中定义  private Long otherUserInfoId;  @ToOne(joinProperty = "otherUserInfoId")  private OtherUserInfoBean otherUserInfoBean;
@@ -29,19 +39,40 @@ import org.greenrobot.greendao.annotation.Generated;
 public class Student {
     @Id(autoincrement = true)
     private long stuID;//学院ID
-    @Index(unique = true)
+    @NotNull
     private String stuNO;//学院编号
     private String stuName;//学院名称
     private String stuSex;//学院性别
     private String stuScore;//学院成绩
-    @Generated(hash = 1600611962)
-    public Student(long stuID, String stuNO, String stuName, String stuSex,
-            String stuScore) {
+
+    private Long cardId;
+    @ToOne(joinProperty = "cardId")
+    private IdCard myCard;
+
+
+    @ToMany(referencedJoinProperty = "courseId")
+    private List<Course> courseList;
+
+
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+    /** Used for active entity operations. */
+    @Generated(hash = 1943931642)
+    private transient StudentDao myDao;
+    @Generated(hash = 1413666094)
+    private transient Long myCard__resolvedKey;
+
+
+
+    @Generated(hash = 813906572)
+    public Student(long stuID, @NotNull String stuNO, String stuName, String stuSex, String stuScore, Long cardId) {
         this.stuID = stuID;
         this.stuNO = stuNO;
         this.stuName = stuName;
         this.stuSex = stuSex;
         this.stuScore = stuScore;
+        this.cardId = cardId;
     }
     @Generated(hash = 1556870573)
     public Student() {
@@ -75,6 +106,105 @@ public class Student {
     }
     public void setStuScore(String stuScore) {
         this.stuScore = stuScore;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 380151869)
+    public IdCard getMyCard() {
+        Long __key = this.cardId;
+        if (myCard__resolvedKey == null || !myCard__resolvedKey.equals(__key)) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            IdCardDao targetDao = daoSession.getIdCardDao();
+            IdCard myCardNew = targetDao.load(__key);
+            synchronized (this) {
+                myCard = myCardNew;
+                myCard__resolvedKey = __key;
+            }
+        }
+        return myCard;
+    }
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1058970061)
+    public void setMyCard(IdCard myCard) {
+        synchronized (this) {
+            this.myCard = myCard;
+            cardId = myCard == null ? null : myCard.getId();
+            myCard__resolvedKey = cardId;
+        }
+    }
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 128553479)
+    public void delete() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.delete(this);
+    }
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 1942392019)
+    public void refresh() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.refresh(this);
+    }
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 713229351)
+    public void update() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.update(this);
+    }
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1701634981)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getStudentDao() : null;
+    }
+    public Long getCardId() {
+        return this.cardId;
+    }
+    public void setCardId(Long cardId) {
+        this.cardId = cardId;
+    }
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 1280401145)
+    public List<Course> getCourseList() {
+        if (courseList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            CourseDao targetDao = daoSession.getCourseDao();
+            List<Course> courseListNew = targetDao._queryStudent_CourseList(stuID);
+            synchronized (this) {
+                if (courseList == null) {
+                    courseList = courseListNew;
+                }
+            }
+        }
+        return courseList;
+    }
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 829241409)
+    public synchronized void resetCourseList() {
+        courseList = null;
     }
 
 
