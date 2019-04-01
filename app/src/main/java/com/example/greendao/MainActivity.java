@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v.getId()==R.id.add){
             IdCard idCard1 = new IdCard();
             idCard1.setId(1l);
-            idCard1.setCardId(500221198808210412l);
+            idCard1.setShengFengCardId(500221198808210412l);
             daoSession.insertOrReplace(idCard1);
 
             Course course1 = new Course();
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for(int i=0;i<stulist.size();i++){
                 Student stu = stulist.get(i);
                 searchAssignInfo += "id："+"\n" + stu.getStuID() + "编号：" + stu.getStuNO()+ "姓名：" + stu.getStuName() + "性别：" + stu.getStuSex() + "成绩：" + stu.getStuScore() + "\n";
-                searchAssignInfo += stu.getMyCard().getCardId() + "\n";
+                searchAssignInfo += stu.getMyCard().getShengFengCardId()+ "\n";
               for(int j =0;j<stu.getCourseList().size();j++){
                     searchAssignInfo += stu.getCourseList().get(j).getName()+ "\n";
                 }

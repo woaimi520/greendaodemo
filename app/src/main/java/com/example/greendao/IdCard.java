@@ -11,13 +11,11 @@ public class IdCard {
     @Id(autoincrement = true)
     private Long id;//学院ID
     @Index(unique = true)
-    private Long cardId;
-
-
-    @Generated(hash = 346932368)
-    public IdCard(Long id, Long cardId) {
+    private Long shengFengCardId;
+    @Generated(hash = 1289194010)
+    public IdCard(Long id, Long shengFengCardId) {
         this.id = id;
-        this.cardId = cardId;
+        this.shengFengCardId = shengFengCardId;
     }
     @Generated(hash = 1500073048)
     public IdCard() {
@@ -28,10 +26,11 @@ public class IdCard {
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getCardId() {
-        return this.cardId;
+    public Long getShengFengCardId() {
+        return this.shengFengCardId;
     }
-    public void setCardId(Long cardId) {
-        this.cardId = cardId;
+    public void setShengFengCardId(Long shengFengCardId) {
+        this.shengFengCardId = shengFengCardId;
     }
+
 }

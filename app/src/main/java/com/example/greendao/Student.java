@@ -18,6 +18,7 @@ import com.ppjun.greendaotest.db.TeacherDao;
 
 /**
  * 此类定义了 表的名字 以及每行的数据
+ * 以下为表中一行和别的表中一行或多行的关系
  * 一对一： UserBean 中定义  private Long otherUserInfoId;  @ToOne(joinProperty = "otherUserInfoId")  private OtherUserInfoBean otherUserInfoBean;
  *         Long otherUserInfoId = (long) (Math.random() * 1000)
  *         user.setOtherUserInfoId(otherUserInfoId); //控制变量otherUserInfoId的值
@@ -48,8 +49,8 @@ public class Student {
     private String stuScore;//学院成绩
 
     private Long cardId;
-    @ToOne(joinProperty = "cardId")
-    private IdCard myCard;
+    @ToOne(joinProperty = "cardId") //对上面变量的秒速 它的值对应下面的 主键id
+    private IdCard myCard;//这个属性怎么体现在表里的那
 
 
     @ToMany(referencedJoinProperty = "courseId")
@@ -237,6 +238,15 @@ public class Student {
     }
 
 
-
-
+    @Override
+    public String toString() {
+        return "Student{" +
+                "stuNO='" + stuNO + '\'' +
+                ", stuName='" + stuName + '\'' +
+                ", stuSex='" + stuSex + '\'' +
+                ", stuScore='" + stuScore + '\'' +
+                ", cardId=" + cardId +
+                ", myCard=" + myCard +
+                '}';
+    }
 }

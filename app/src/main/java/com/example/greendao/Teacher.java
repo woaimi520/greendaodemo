@@ -131,4 +131,14 @@ public class Teacher {
         myDao = daoSession != null ? daoSession.getTeacherDao() : null;
     }
 
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teaID=" + teaID +
+                ", name='" + name + '\'' +
+                ", studentBeanList=" + studentBeanList +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                '}';
+    }
 }
