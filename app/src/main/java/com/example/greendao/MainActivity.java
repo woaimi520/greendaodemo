@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     StudentDao stuDao;
     private void getStuDao(){
         //创建数据
-        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(this, "hlq.db", null);
+        MySQLiteOpenHelper devOpenHelper = new MySQLiteOpenHelper(this, "hlq.db", null);
         daoMaster = new DaoMaster(devOpenHelper.getWritableDatabase());
         daoSession = daoMaster.newSession();
         stuDao = daoSession.getStudentDao();
